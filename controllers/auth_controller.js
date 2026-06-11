@@ -7,11 +7,17 @@ const SECRET_KEY = 'your-super-secret';
 const authorize = (roles = []) => {
     return async (req, res, next) => {
         try {
-            // TODO
+            const token = req.headers['x-access-token'];
+             if (!token) {
+                return res.status(401).json({
+                    error: 'No se proporcionó un token'
+                });
+            }
+            jwt.verify(token, SECRET_KEY);
             return next();
 
         } catch (err) {
-            return res.status(401).json({ error: 'Token inválido o expirado' });
+            return res.status(403).json({ error: 'Token inválido o expirado' });
         }
     };
 };

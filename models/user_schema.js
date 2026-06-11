@@ -9,7 +9,7 @@ const conectarDB = async () => {
         await mongoose.connect(`mongodb://${server}/${database}`);  
         // TODO
         console.log('MongoDB');
-        await mongoose.disconnect();
+        
     } catch (err) {
         console.log(err);
     }

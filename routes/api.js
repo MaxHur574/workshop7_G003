@@ -12,8 +12,10 @@ const SECRET_KEY = 'your-super-secret';
 // TAREA 2: Implementar Operación GET
 router.get('/users', async (req, res) => {
     try {
-        // TODO
-        res.status(200).json({ error: 'Ruta GET /users no implementada' });
+        const users = await User.find();
+
+        res.status(200).json(users);
+        
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -22,8 +24,15 @@ router.get('/users', async (req, res) => {
 // TAREA 3 y 5: Implementar Operación POST y proteger con middleware
 router.post('/users', authorize(['admin']), async (req, res) => {
     try {
-        // TODO
-        res.status(501).json({ error: 'Ruta POST /users no implementada' });
+        const { name, email } = req.body;
+
+        const user = await User.create({
+            name,
+            email
+        });
+
+        res.status(201).json(user);
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -32,8 +41,16 @@ router.post('/users', authorize(['admin']), async (req, res) => {
 // TAREA 4: Generación de Token (Login)
 router.post('/login', async (req, res) => {
     try {
-        // TODO
-        res.status(501).json({ error: 'Ruta POST /login no implementada' });
+        const { email } = req.body;
+
+        const token = jwt.sign(
+            { email },
+            SECRET_KEY,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({ token });
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
